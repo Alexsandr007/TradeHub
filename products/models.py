@@ -43,13 +43,13 @@ CATEGORY_CHOICES = (
 class Products(models.Model):
     name = models.CharField(max_length=50)
     cost = models.FloatField()
-    сondition = models.ChoiceField(choices=CONDITION_CHOICES)
+    сondition = models.CharField(max_length=20, choices=CONDITION_CHOICES)
     date_created = models.DateTimeField(auto_now_add=True)
     short_description = models.CharField(max_length=50)
     features = models.ForeignKey(Features, on_delete=models.CASCADE)
     description = models.TextField()
     location = models.CharField(max_length=50)
-    category = models.ChoiceField(choices=CATEGORY_CHOICES)
+    category = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
 
     class Meta:
         db_table = 'products'
