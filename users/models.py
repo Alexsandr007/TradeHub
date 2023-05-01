@@ -1,5 +1,5 @@
+from products import models as pm
 from django.db import models
-import TradeHub.products.models as p
 from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin, UserManager)
 from django.contrib.auth.validators import UnicodeUsernameValidator
 
@@ -21,7 +21,7 @@ def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 
-class Users(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     username_validator = UnicodeUsernameValidator()
     username = models.CharField(
         "username",
@@ -40,8 +40,8 @@ class Users(AbstractBaseUser, PermissionsMixin):
     date_of_birth = models.DateTimeField(null=True)
     datetime = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(null=True, blank=True)
-    products = models.ForeignKey(p.Products, on_delete=models.CASCADE)
-    seller = models.models.CharField(max_length=20, choices=SELLER_CHOICES)
+    products = models.ForeignKey(pm.Products, on_delete=models.CASCADE)
+    seller = models.CharField(max_length=20, choices=SELLER_CHOICES)
     exchange = models.BooleanField(default=False)
     objects = UserManager()
 
@@ -54,8 +54,8 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
 
 class Reviews(models.Model):
-    user_whom = products = models.ForeignKey(Users, on_delete=models.CASCADE)
-    user_who = products = models.ForeignKey(Users, on_delete=models.CASCADE)
+    user_whom = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_whom')
+    user_who = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_who')
     value = models.IntegerField()
 
     class Meta:
